@@ -2,6 +2,7 @@
 1. Install a live server extension in VS code [marketplace](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) (or can use any external live server library)
 2. ```npm run build-tailwind``` (build tailwind CSS to ```/assets/tailwind.css``` based on all ```.html``` files in project)
 3. Run the live server extension on any ```.html``` file you working on (for example ```src/records-overview/index.html```)
+4. Normaly you'd run ```npm run build-tailwind``` on every html changes to re-generate the CSS or else the styling might not work
 
 # Notes When Deploying
 1. ```/assets``` folder should be moved to OTCS support folder (```OTCS/support/dashboard-widgets/assets```)
