@@ -7,17 +7,13 @@
     <link href="/assets/tailwind.css" rel="stylesheet">
     <link href="/assets/fontawesome.css" rel="stylesheet">
     <script src="/assets/chart.js"></script>
-    <!-- <link href="[LL_REPTAG_SUPPORTDIR /]dashboard-widgets/assets/tailwind.css" rel="stylesheet">
-    <link href="[LL_REPTAG_SUPPORTDIR /]dashboard-widgets/assets/fontawesome.css" rel="stylesheet">
-    <script src="[LL_REPTAG_SUPPORTDIR /]dashboard-widgets/assets/chart.js"></script> -->
 </head>
-
 <body class="bg-gray-200 flex h-screen">
     <div class="w-full h-full flex p-2 bg-gray-300">
         <div class="w-2/6 h-full p-2">
             <div class="bg-white rounded-lg shadow-lg p-4 h-full overflow-auto">
                 <div class="text-2xl text-gray-800 mb-6">
-                    <i class="fa-solid fa-file"></i> <span class="underline">Records By Type</span>
+                    <i class="fa-solid fa-chart-column"></i> <span class="underline">Overview Past 7 Days</span>
                 </div>
                 <div>
                     <canvas width="300" id="records-type-chart"></canvas>
@@ -26,26 +22,26 @@
         </div>
 
         <div class="w-4/6 h-full p-2 flex flex-col">
-            <div class="flex mb-2 min-h-28">
-                <div class="w-full flex flex-col justify-between bg-green-500 text-white rounded-lg shadow-lg p-4">
-                    <div class="text-4xl font-semibold">111</div>
-                    <div class="font-semibold text-xl">Records In System</div>
+            <div class="flex mb-2 min-h-24">
+                <div class="w-full flex flex-col justify-between bg-red-500 text-white rounded-2xl shadow-lg p-4">
+                    <div class="font-semibold text-xl">Delete Actions</div>
+                    <div class="text-4xl font-semibold">5</div>
                 </div>
                 
-                <div class="w-full flex flex-col justify-between bg-white text-black rounded-lg shadow-lg p-4 mx-2">
-                    <div class="text-4xl font-semibold">111</div>
-                    <div class="font-semibold text-xl">Active Records</div>
+                <div class="w-full flex flex-col justify-between bg-blue-500 text-white rounded-2xl shadow-lg p-4 mx-10">
+                    <div class="font-semibold text-xl">Attribute Changes</div>
+                    <div class="text-4xl font-semibold">2</div>
                 </div>
         
-                <div class="w-full flex flex-col justify-between bg-red-600 text-white rounded-lg shadow-lg p-4">
-                    <div class="text-4xl font-semibold">111</div>
-                    <div class="font-semibold text-xl">Deleted Records</div>
+                <div class="w-full flex flex-col justify-between bg-orange-400 text-white rounded-2xl shadow-lg p-4">
+                    <div class="font-semibold text-xl">Permission Changes</div>
+                    <div class="text-4xl font-semibold">4</div>
                 </div>
             </div>
         
             <div class="bg-white flex-grow rounded-lg shadow-lg p-4">
                 <div class="text-2xl text-gray-800 mb-3">
-                    <i class="fa-solid fa-file-circle-plus"></i> <span class="underline">Recently Added</span>
+                    <i class="fa-solid fa-folder"></i> <span class="underline">Top Affected Locations</span>
                 </div>
                 
                 <div class="h-full">
