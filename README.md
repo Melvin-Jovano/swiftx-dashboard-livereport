@@ -1,1 +1,1 @@
-- Generate Tailwind CSS
+- Generate Tailwind CSS (npm run build-tailwind)
