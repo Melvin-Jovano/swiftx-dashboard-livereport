@@ -47,15 +47,22 @@
                         <div class="!font-semibold !text-sm">Records In System</div>
                     </div>
                     
-                    <div class="w-full flex flex-col justify-between bg-white !text-black rounded-lg shadow-lg !p-2.5 !mx-2">
-                        <div class="!text-2xl !font-semibold">111</div>
-                        <div class="!font-semibold !text-sm">Active Records</div>
-                    </div>
-            
-                    <div class="w-full flex flex-col justify-between bg-red-600 !text-white rounded-lg shadow-lg !p-2.5">
-                        <div class="!text-2xl !font-semibold">111</div>
-                        <div class="!font-semibold !text-sm">Deleted Records</div>
-                    </div>
+                    [LL_REPTAG_$RecordsByStatus RUNSQL SETVAR:recordByStatus /]
+                    [LL_WEBREPORT_FOR DATA:[LL_REPTAG_!recordByStatus /] VAR:i /]
+                        [LL_WEBREPORT_IF "[LL_REPTAG_%i CURRENTVAL RECORD:Status /]" == "Deleted" /]
+                            <div class="w-full flex flex-col justify-between bg-red-600 !text-white rounded-lg shadow-lg !p-2.5">
+                                <div class="!text-2xl !font-semibold">[LL_REPTAG_%i CURRENTVAL RECORD:StatusCount /]</div>
+                                <div class="!font-semibold !text-sm">[LL_REPTAG_%i CURRENTVAL RECORD:Status /]</div>
+                            </div>
+                        [LL_WEBREPORT_ENDIF /]
+                        
+                        [LL_WEBREPORT_IF "[LL_REPTAG_%i CURRENTVAL RECORD:Status /]" == "Active" /]
+                            <div class="w-full flex flex-col justify-between bg-white !text-black rounded-lg shadow-lg !p-2.5 !mx-2">
+                                <div class="!text-2xl !font-semibold">[LL_REPTAG_%i CURRENTVAL RECORD:StatusCount /]</div>
+                                <div class="!font-semibold !text-sm">[LL_REPTAG_%i CURRENTVAL RECORD:Status /]</div>
+                            </div>
+                        [LL_WEBREPORT_ENDIF /]
+                    [LL_WEBREPORT_ENDFOR /]
                 </div>
             
                 <div class="bg-white flex-grow rounded-lg shadow-lg !p-3">
