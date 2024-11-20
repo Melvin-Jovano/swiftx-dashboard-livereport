@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.binf-widgets, .binf-widgets a, .binf-widgets abbr, .binf-widgets acronym, .binf-widgets address, .binf-widgets applet, .binf-widgets article, .binf-widgets aside, .binf-widgets audio, .binf-widgets b, .binf-widgets big, .binf-widgets blockquote, .binf-widgets canvas, .binf-widgets caption, .binf-widgets center, .binf-widgets cite, .binf-widgets code, .binf-widgets dd, .binf-widgets del, .binf-widgets details, .binf-widgets dfn, .binf-widgets div, .binf-widgets dl, .binf-widgets dt, .binf-widgets em, .binf-widgets embed, .binf-widgets fieldset, .binf-widgets figcaption, .binf-widgets figure, .binf-widgets footer, .binf-widgets form, .binf-widgets h1, .binf-widgets h2, .binf-widgets h3, .binf-widgets h4, .binf-widgets h5, .binf-widgets h6, .binf-widgets header, .binf-widgets hgroup, .binf-widgets i, .binf-widgets iframe, .binf-widgets img, .binf-widgets ins, .binf-widgets kbd, .binf-widgets label, .binf-widgets legend, .binf-widgets li, .binf-widgets mark, .binf-widgets menu, .binf-widgets nav, .binf-widgets object, .binf-widgets ol, .binf-widgets output, .binf-widgets p, .binf-widgets pre, .binf-widgets q, .binf-widgets ruby, .binf-widgets s, .binf-widgets samp, .binf-widgets section, .binf-widgets small, .binf-widgets span, .binf-widgets strike, .binf-widgets strong, .binf-widgets sub, .binf-widgets summary, .binf-widgets sup, .binf-widgets table, .binf-widgets tbody, .binf-widgets td, .binf-widgets tfoot, .binf-widgets th, .binf-widgets thead, .binf-widgets time, .binf-widgets tr, .binf-widgets tt, .binf-widgets u, .binf-widgets ul, .binf-widgets var, .binf-widgets video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    font-family: "OpenText Sans", Helvetica, Arial, sans-serif;
+    vertical-align: baseline;
+}
