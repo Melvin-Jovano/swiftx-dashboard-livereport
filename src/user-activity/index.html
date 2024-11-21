@@ -4,8 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="/assets/tailwind.css" rel="stylesheet">
+    <link href="/assets/fontawesome.css" rel="stylesheet">
+    <script src="/assets/chart.js"></script>
+    <script src="/assets/utils.js"></script>
+    <!-- <link href="/img/dashboard-widgets/assets/tailwind.css" rel="stylesheet">
+    <link href="/img/dashboard-widgets/assets/fontawesome.css" rel="stylesheet">
+    <script src="/img/dashboard-widgets/assets/chart.js"></script>
+    <script src="/img/dashboard-widgets/assets/utils.js"></script> -->
+    <style>
+        .webreports-tilereport-content {
+            height: 100%;
+        }
+
+        .binf-widgets .tailwind-wrapper i {
+            font-family: "Font Awesome 6 Free" !important;
+            font-weight: 900;
+        }
+    </style>
 </head>
-<body>
+
+<body class="binf-widgets h-screen">
+    <div class="bg-gray-200 flex h-full tailwind-wrapper">
+        <div class="w-full h-full flex !p-1 bg-gray-300">
+            <div class="w-8/12 h-full !p-2">
+                <div class="bg-white rounded-lg shadow-lg !p-3 h-full overflow-auto">
+                    <div class="flex !mb-3">
+                        <div class="!text-lg !text-gray-800 w-full">
+                            <i class="fa-solid fa-users"></i> <span class="underline">Daily User Engagement</span>
+                        </div>
+                        
+                        <div class="flex w-56 text-3xs !p-2 border rounded-lg">
+                            <div class="!mr-1">
+                                <img src="/assets/img/trophy.png" alt="">
+                            </div>
+
+                            <div class="!font-semibold">
+                                <div class="!mb-1">MOST ACTIVE USER</div>
+                                <div>Admin <i class="fa-solid fa-chart-line !text-green-500 !ml-1"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <canvas id="daily-user-engagement-chart"></canvas>
+                    </div>
+                </div>
+            </div>
     
+            <div class="w-4/12 h-full !p-2 flex flex-col">
+                <div class="bg-white rounded-lg shadow-lg !p-3 h-full overflow-auto">
+                    <div class="!text-lg !text-gray-800">
+                        <i class="fa-solid fa-right-to-bracket"></i> <span class="underline">Recent Login</span>
+                    </div>
+                    
+                    <div>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, obcaecati suscipit eos ex laborum tenetur odit est voluptatum nostrum laboriosam, laudantium officiis corporis incidunt quae dolorem recusandae? Nesciunt, quas fuga.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            initializeRecordsTypeChart();
+
+            function initializeRecordsTypeChart() {
+                try {
+                    // [LL_REPTAG_$DailyUserEngagement RUNSQL SETVAR:dailyUserEngagement /]
+                    // const chartData = [LL_REPTAG_!dailyUserEngagement TOJSON /];
+                    const chartData = [
+                        {
+                            "DayOfWeek": "Fri",
+                            "ActiveUsers": 2,
+                            "TotalActivities": 58,
+                            "ActivityDate": "2024-11-15"
+                        },
+                        {
+                            "DayOfWeek": "Sat",
+                            "ActiveUsers": 1,
+                            "TotalActivities": 2,
+                            "ActivityDate": "2024-11-16"
+                        },
+                        {
+                            "DayOfWeek": "Sun",
+                            "ActiveUsers": 1,
+                            "TotalActivities": 24,
+                            "ActivityDate": "2024-11-17"
+                        },
+                        {
+                            "DayOfWeek": "Mon",
+                            "ActiveUsers": 0,
+                            "TotalActivities": 0,
+                            "ActivityDate": "2024-11-18"
+                        },
+                        {
+                            "DayOfWeek": "Tue",
+                            "ActiveUsers": 1,
+                            "TotalActivities": 48,
+                            "ActivityDate": "2024-11-19"
+                        },
+                        {
+                            "DayOfWeek": "Wed",
+                            "ActiveUsers": 2,
+                            "TotalActivities": 3244,
+                            "ActivityDate": "2024-11-20"
+                        },
+                        {
+                            "DayOfWeek": "Thu",
+                            "ActiveUsers": 2,
+                            "TotalActivities": 6152,
+                            "ActivityDate": "2024-11-21"
+                        }
+                    ];
+
+                    if (!chartData || !Array.isArray(chartData)) {
+                        console.error('Invalid chart data');
+                        return;
+                    }
+                    
+                    const ctx = document.getElementById('daily-user-engagement-chart');
+                    if (!ctx) {
+                        console.error('Canvas element not found');
+                        return;
+                    }
+                    
+                    const recordsTypeData = {
+                        labels: chartData.map(item => item.DayOfWeek),
+                        data: chartData.map(item => item.TotalActivities)
+                    };
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: recordsTypeData.labels,
+                            datasets: [{label: 'User Activities', data: recordsTypeData.data}]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        boxWidth: 20,
+                                        font: {
+                                            size: 9.5
+                                        }
+                                    }
+                                },
+                            },
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error initializing chart:', error);
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
