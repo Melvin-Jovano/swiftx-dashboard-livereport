@@ -28,12 +28,16 @@
     <div class="bg-gray-200 flex h-full tailwind-wrapper">
         <div class="w-full h-full flex !p-1 bg-gray-300">
             <div class="w-5/12 h-full !p-2">
-                <div class="bg-white rounded-lg shadow-lg !p-3 h-full overflow-auto">
+                <div class="bg-white rounded-lg shadow-lg !p-3 h-full overflow-auto relative">
                     <div class="!text-lg !text-gray-800">
                         <i class="fa-solid fa-chart-column"></i> <span class="underline">Overview Past 7 Days</span>
                     </div>
+                    <div class="text-center absolute left-0 right-0 !mt-24">
+                        <div class="!text-xl !font-bold">Total</div>
+                        <div class="!text-3xl !font-bold" id="total-overviews">11</div>
+                    </div>
                     <div>
-                        <canvas width="220" id="records-type-chart"></canvas>
+                        <canvas width="220" id="overview-past-chart"></canvas>
                     </div>
                 </div>
             </div>
@@ -45,12 +49,12 @@
                         <div class="!text-2xl !font-semibold">111</div>
                     </div>
                     
-                    <div class="w-full flex flex-col justify-between bg-blue-500 !text-white rounded-lg shadow-lg !p-2.5">
+                    <div class="w-full flex flex-col justify-between bg-blue-500 !text-white rounded-lg shadow-lg !p-2.5 !mx-2">
                         <div class="!font-semibold !text-sm">Attribute Changes</div>
                         <div class="!text-2xl !font-semibold">111</div>
                     </div>
                 
-                    <div class="w-full flex flex-col justify-between bg-orange-500 !text-white rounded-lg shadow-lg !p-2.5 !mx-2">
+                    <div class="w-full flex flex-col justify-between bg-orange-500 !text-white rounded-lg shadow-lg !p-2.5">
                         <div class="!font-semibold !text-sm">Permission Changes</div>
                         <div class="!text-2xl !font-semibold">111</div>
                     </div>
@@ -62,110 +66,111 @@
                     </div>
                     
                     <div class="h-full overflow-auto">
-                        <div class="flex">
-                            <div class="!text-xs">All <span class="rounded-lg bg-blue-600 !p-1 !text-xs">11</span></div>
+                        <div class="flex !mt-1 items-center">
+                            <button onclick="switchTab('All')" title="All" class="bg-transparent !mr-1 border-none flex items-center justify-center hover-border-b-blue cursor-pointer delay-300 text-3xs">
+                                <div class="!mr-1 !text-blue-500">All</div>
+                            </button>
+
+                            <div class="!text-gray-400 !mr-1">|</div>
+
+                            <button onclick="switchTab('Delete Actions')" title="Delete Actions" class="bg-transparent !mr-1 border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
+                                <div class="!mr-1 !text-gray-400">Delete Actions</div>
+                            </button>
+
+                            <button onclick="switchTab('Attribute Changes')" title="Attribute Changes" class="bg-transparent !mr-1 border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
+                                <div class="!mr-1 !text-gray-400">Attribute Changes</div>
+                            </button>
+
+                            <button onclick="switchTab('Permission Changes')" title="Permission Changes" class="bg-transparent border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
+                                <div class="!mr-1 !text-gray-400">Permission Changes</div>
+                            </button>
+                        </div>
+
+                        <div class="!mt-2">
+                            <div class="w-full h-20 overflow-auto">
+                                <div class="flex border-b">
+                                    <div class="w-5/6 !font-semibold text-2xs !p-1">
+                                        Locations
+                                    </div>
+                                    <div class="w-1/6 !font-semibold text-2xs !p-1">
+                                        Actions
+                                    </div>
+                                </div>
+
+                                <div id="top-affected-locations-table-container">
+                                    <div class="flex border-b">
+                                        <a href="" class="w-5/6 !text-blue-500 justify text-3xs !p-1">
+                                            RMS > Transient Folder > Medical Checkup
+                                        </a>
+                                        <div class="w-1/6 !text-blue-500 !text-xs !p-1">
+                                            <a href="" class="!text-blue-500 !text-xs">
+                                                3
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
     
     <script>
+        function switchTab(type) {
+            const container = document.getElementById('top-affected-locations-table-container');
+            container.innerHTML = '';
+
+            if(type == "All") {
+                const data = [];
+
+            } else if(type == "Delete Action") {
+                const data = [];
+
+            } else if(type == "Attribute Changes") {
+                const data = [];
+
+            } else if(type == "Permission Changes") {
+                const data = [];
+
+            } 
+        }
+
         (function() {
-            // Initialize chart when the script runs
             initializeRecordsTypeChart();
-            initializeRecentlyAddedRecords();
-            
-            function initializeRecentlyAddedRecords() {
-                try {
-                    const records = [];
-                    
-                    for(const record of records) {
-                        const container = document.createElement('div'); // Main container
-                        container.className = "flex items-center !text-xs !py-2 justify-center";
-                        container.style.borderBottom = "0.5px solid rgba(69, 62, 66, 0.4)";
-                        
-                        // Circle with initials
-                        const initialsDiv = document.createElement('div');
-                        initialsDiv.style.fontSize = "0.45rem";
-                        initialsDiv.className = "bg-red-400 relative rounded-full w-8 h-6 flex items-center justify-center !text-white !font-bold";
-                        const initials = document.createTextNode(displayUserNameAvatarText(record.UserName, record.FirstName, record.LastName));
-                        initialsDiv.appendChild(initials);
-                        container.appendChild(initialsDiv);
-                        
-                        // Text container
-                        const textContainer = document.createElement('div');
-                        textContainer.className = "w-full !px-1.5";
-                        textContainer.style.fontSize = "0.7rem";
-                        
-                        // Main text
-                        const textNode = document.createTextNode(displayUserName(record.UserName, record.FirstName, record.LastName));
-                        textContainer.appendChild(textNode);
-                        
-                        // File link
-                        const fileLink = document.createElement('a');
-                        fileLink.className = "!mx-1 !text-blue-500 cursor-pointer";
-                        fileLink.innerHTML = `${truncateString(record.FileName, 20)}`;
-                        textContainer.appendChild(fileLink);
-                        
-                        // Folder link
-                        const folderLink = document.createElement('a');
-                        folderLink.className = "!ml-1 !text-blue-500 cursor-pointer";
-                        folderLink.innerHTML = `${truncateString(record.FolderName, 20)}`;
-                        textContainer.appendChild(document.createTextNode(' into '));
-                        textContainer.appendChild(folderLink);
-                        
-                        // Append textContainer to main container
-                        container.appendChild(textContainer);
-                        
-                        // Timestamp
-                        const timestampDiv = document.createElement('div');
-                        timestampDiv.className = "!text-slate-500 w-20 !text-right";
-                        timestampDiv.style.fontSize = "0.6rem";
-                        timestampDiv.textContent = formatRelativeTime(record.AuditDate); // Example timestamp
-                        container.appendChild(timestampDiv);
-                        
-                        // Append to body or a target element
-                        document.getElementById("recently-added-container").appendChild(container);
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-        
+
             function initializeRecordsTypeChart() {
                 try {
-                    const chartData = [];
+                    [LL_REPTAG_$TopLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
+                    const data = [LL_REPTAG_!results TOJSON /];
+                    // const data = [];
+
+                    const chartData = data.slice(0, 3);
+
+                    document.getElementById('total-overviews').innerText = chartData.reduce((sum, item) => sum + item.ActionCount, 0);
                     
                     if (!chartData || !Array.isArray(chartData)) {
                         console.error('Invalid chart data');
                         return;
                     }
                     
-                    const ctx = document.getElementById('records-type-chart');
+                    const ctx = document.getElementById('overview-past-chart');
                     if (!ctx) {
                         console.error('Canvas element not found');
                         return;
                     }
                     
                     const recordsTypeData = {
-                        labels: [
-                            'Red',
-                            'Blue',
-                            'Yellow'
-                        ],
-                        data: [300, 50, 100],
+                        labels: chartData.map(item => getLastPath(item.Location)),
+                        data: chartData.map(item => item.ActionCount)
                     };
 
                     new Chart(ctx, {
                         type: 'doughnut',
                         data: {
                             labels: recordsTypeData.labels,
-                            datasets: [{
-                                data: recordsTypeData.data,
-                            }]
+                            datasets: [{data: recordsTypeData.data}]
                         },
                         options: {
                             responsive: true,
@@ -174,9 +179,9 @@
                                 legend: {
                                     position: 'top',
                                     labels: {
-                                        boxWidth: 20, // Adjusts the size of legend boxes
+                                        boxWidth: 20,
                                         font: {
-                                            size: 9.5 // Set font size here
+                                            size: 9.5
                                         }
                                     }
                                 },

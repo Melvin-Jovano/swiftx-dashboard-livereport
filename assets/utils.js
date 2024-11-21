@@ -46,3 +46,8 @@ function truncateString(str, length = 10) {
 function nodeLink(nodeId) {
     return `/otcs/cs.exe/app/nodes/${nodeId}`;
 }
+
+function getLastPath(input, delimiter = ">") {
+    const segments = input.split(delimiter);
+    return segments[segments.length - 1].trim();
+}

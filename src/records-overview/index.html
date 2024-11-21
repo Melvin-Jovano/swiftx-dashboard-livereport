@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="/assets/tailwind.css" rel="stylesheet">
+    <!-- <link href="/assets/tailwind.css" rel="stylesheet">
     <link href="/assets/fontawesome.css" rel="stylesheet">
     <script src="/assets/chart.js"></script>
-    <script src="/assets/utils.js"></script>
+    <script src="/assets/utils.js"></script> -->
     <link href="/img/dashboard-widgets/assets/tailwind.css" rel="stylesheet">
     <link href="/img/dashboard-widgets/assets/fontawesome.css" rel="stylesheet">
     <script src="/img/dashboard-widgets/assets/chart.js"></script>
@@ -112,7 +112,7 @@
                         textContainer.style.fontSize = "0.7rem";
                         
                         // Main text
-                        const textNode = document.createTextNode(displayUserName(record.UserName, record.FirstName, record.LastName));
+                        const textNode = document.createTextNode(displayUserName(record.UserName, record.FirstName, record.LastName) + " added");
                         textContainer.appendChild(textNode);
                         
                         // File link
@@ -120,7 +120,7 @@
                         fileLink.href = nodeLink(record.FileID);
                         fileLink.target = "_blank";
                         fileLink.className = "!mx-1 !text-blue-500 cursor-pointer";
-                        fileLink.innerHTML = `${truncateString(record.FileName, 20)}`;
+                        fileLink.innerHTML = `${truncateString(record.FileName, 30)}`;
                         textContainer.appendChild(fileLink);
                         
                         // Folder link
@@ -128,8 +128,8 @@
                         folderLink.href = nodeLink(record.FolderID);
                         folderLink.target = "_blank";
                         folderLink.className = "!ml-1 !text-blue-500 cursor-pointer";
-                        folderLink.innerHTML = `${truncateString(record.FolderName, 20)}`;
-                        textContainer.appendChild(document.createTextNode(' into '));
+                        folderLink.innerHTML = `${truncateString(record.FolderName, 30)}`;
+                        textContainer.appendChild(document.createTextNode(' into'));
                         textContainer.appendChild(folderLink);
                         
                         // Append textContainer to main container
