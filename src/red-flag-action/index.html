@@ -46,17 +46,29 @@
                 <div class="flex !mb-2 max-h-18">
                     <div class="w-full flex flex-col justify-between bg-red-500 !text-white rounded-lg shadow-lg !p-2.5">
                         <div class="!font-semibold !text-sm">Delete Actions</div>
-                        <div class="!text-2xl !font-semibold">111</div>
+                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
+                            [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
+                        [LL_WEBREPORT_ENDIF /]
+                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
                     </div>
                     
                     <div class="w-full flex flex-col justify-between bg-blue-500 !text-white rounded-lg shadow-lg !p-2.5 !mx-2">
                         <div class="!font-semibold !text-sm">Attribute Changes</div>
-                        <div class="!text-2xl !font-semibold">111</div>
+                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
+                            [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
+                        [LL_WEBREPORT_ENDIF /]
+                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
                     </div>
                 
                     <div class="w-full flex flex-col justify-between bg-orange-500 !text-white rounded-lg shadow-lg !p-2.5">
                         <div class="!font-semibold !text-sm">Permission Changes</div>
-                        <div class="!text-2xl !font-semibold">111</div>
+                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
+                            [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
+                        [LL_WEBREPORT_ENDIF /]
+                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
                     </div>
                 </div>
             
@@ -68,21 +80,21 @@
                     <div class="h-full overflow-auto">
                         <div class="flex !mt-1 items-center">
                             <button onclick="switchTab('All')" title="All" class="bg-transparent !mr-1 border-none flex items-center justify-center hover-border-b-blue cursor-pointer delay-300 text-3xs">
-                                <div class="!mr-1 !text-blue-500">All</div>
+                                <div id="all-affected-locations" class="!mr-1 !text-blue-500">All</div>
                             </button>
 
                             <div class="!text-gray-400 !mr-1">|</div>
 
                             <button onclick="switchTab('Delete Actions')" title="Delete Actions" class="bg-transparent !mr-1 border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
-                                <div class="!mr-1 !text-gray-400">Delete Actions</div>
+                                <div id="deleted-affected-locations" class="!mr-1 !text-gray-400">Delete Actions</div>
                             </button>
 
                             <button onclick="switchTab('Attribute Changes')" title="Attribute Changes" class="bg-transparent !mr-1 border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
-                                <div class="!mr-1 !text-gray-400">Attribute Changes</div>
+                                <div id="attribute-affected-locations" class="!mr-1 !text-gray-400">Attribute Changes</div>
                             </button>
 
                             <button onclick="switchTab('Permission Changes')" title="Permission Changes" class="bg-transparent border-none text-3xs flex items-center justify-center hover-border-b-blue cursor-pointer delay-300">
-                                <div class="!mr-1 !text-gray-400">Permission Changes</div>
+                                <div id="permission-affected-locations" class="!mr-1 !text-gray-400">Permission Changes</div>
                             </button>
                         </div>
 
@@ -97,18 +109,7 @@
                                     </div>
                                 </div>
 
-                                <div id="top-affected-locations-table-container">
-                                    <div class="flex border-b">
-                                        <a href="" class="w-5/6 !text-blue-500 justify text-3xs !p-1">
-                                            RMS > Transient Folder > Medical Checkup
-                                        </a>
-                                        <div class="w-1/6 !text-blue-500 !text-xs !p-1">
-                                            <a href="" class="!text-blue-500 !text-xs">
-                                                3
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div id="top-affected-locations-table-container"></div>
                             </div>
                         </div>
                     </div>
@@ -119,26 +120,108 @@
     
     <script>
         function switchTab(type) {
-            const container = document.getElementById('top-affected-locations-table-container');
-            container.innerHTML = '';
-
-            if(type == "All") {
-                const data = [];
-
-            } else if(type == "Delete Action") {
-                const data = [];
-
-            } else if(type == "Attribute Changes") {
-                const data = [];
-
-            } else if(type == "Permission Changes") {
-                const data = [];
-
-            } 
+            try {
+                const container = document.getElementById('top-affected-locations-table-container');
+                container.innerHTML = '';
+                
+                selectTab(type);
+                
+                if(type == "All") {
+                    [LL_REPTAG_$TopAllAffectedLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
+                    const data = [LL_REPTAG_!results TOJSON /];
+                    createTopAffectedLocations(data);
+                } else if(type == "Delete Actions") {
+                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+                    const data = [LL_REPTAG_!results TOJSON /];
+                    createTopAffectedLocations(data);
+                } else if(type == "Attribute Changes") {
+                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+                    const data = [LL_REPTAG_!results TOJSON /];
+                    createTopAffectedLocations(data);
+                } else if(type == "Permission Changes") {
+                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+                    const data = [LL_REPTAG_!results TOJSON /];
+                    createTopAffectedLocations(data);
+                }
+            } catch (e) {
+                console.error(e);
+            }
         }
+        
+        function selectTab(type) {
+            const attr = document.getElementById('attribute-affected-locations');
+            const all = document.getElementById('all-affected-locations');
+            const del = document.getElementById('deleted-affected-locations');
+            const perm = document.getElementById('permission-affected-locations');
+
+            function deselectAll() {
+                attr.classList.remove('!text-blue-500');
+                del.classList.remove('!text-blue-500');
+                perm.classList.remove('!text-blue-500');
+                all.classList.remove('!text-blue-500');
+                del.classList.add('!text-gray-400');
+                perm.classList.add('!text-gray-400');
+                attr.classList.add('!text-gray-400');
+                all.classList.add('!text-gray-400');
+            }
+
+            deselectAll();
+
+            if(type == 'All') {
+                all.classList.remove('!text-gray-400');
+                all.classList.add('!text-blue-500');
+            } else if(type == 'Delete Actions') {
+                del.classList.remove('!text-gray-400');
+                del.classList.add('!text-blue-500');
+            } else if(type == 'Attribute Changes') {
+                attr.classList.remove('!text-gray-400');
+                attr.classList.add('!text-blue-500');
+            } else if(type == 'Permission Changes') {
+                perm.classList.remove('!text-gray-400');
+                perm.classList.add('!text-blue-500');
+            }
+        }
+        
+        function createTopAffectedLocations(records) {
+            for (const record of records) {
+                // Create the container div
+                const container = document.createElement('div');
+                
+                // Create the flex row div
+                const flexRow = document.createElement('div');
+                flexRow.className = 'flex border-b !p-1';
+        
+                // Create the first anchor element for the location
+                const anchor1 = document.createElement('a');
+                anchor1.href = `/otcs/cs.exe/nodes/${records.ParentID}`;
+                anchor1.target = '_blank';
+                anchor1.className = 'w-5/6 !text-blue-500 flex items-start text-left text-3xs';
+                anchor1.textContent = record.Location;
+        
+                // Create the second anchor element for the total actions
+                const anchor2 = document.createElement('a');
+                anchor2.target = '_blank';
+                anchor2.href = '';
+                anchor2.className = 'w-1/6 !text-blue-500 flex text-left items-start text-3xs';
+                anchor2.textContent = record.TotalCount;
+        
+                // Append anchors to the flex row
+                flexRow.appendChild(anchor1);
+                flexRow.appendChild(anchor2);
+        
+                // Append the flex row to the container
+                container.appendChild(flexRow);
+                
+                // Append the container to the body (or another target element)
+                document.getElementById("top-affected-locations-table-container").appendChild(container);
+            }
+            
+        }
+        
 
         (function() {
             initializeRecordsTypeChart();
+            switchTab("All");
 
             function initializeRecordsTypeChart() {
                 try {
