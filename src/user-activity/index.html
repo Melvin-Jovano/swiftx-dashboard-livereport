@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="/assets/tailwind.css" rel="stylesheet">
+    <!-- <link href="/assets/tailwind.css" rel="stylesheet">
     <link href="/assets/fontawesome.css" rel="stylesheet">
     <script src="/assets/chart.js"></script>
-    <script src="/assets/utils.js"></script>
+    <script src="/assets/utils.js"></script> -->
     <link href="/img/dashboard-widgets/assets/tailwind.css" rel="stylesheet">
     <link href="/img/dashboard-widgets/assets/fontawesome.css" rel="stylesheet">
     <script src="/img/dashboard-widgets/assets/chart.js"></script>
@@ -128,78 +128,7 @@
                     </div>
                     
                     <div class="flex !mt-2 overflow-auto h-52">
-                        <div class="flex flex-col w-full">
-                            <div class="flex w-full">
-                                <div class="flex flex-col items-center">
-                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white !font-semibold text-3xs">
-                                        PW
-                                    </div>
-                                    <div class="w-1 h-11 bg-gradient-to-b from-blue-500 via-green-500 to-orange-500"></div>
-                                </div>
-
-                                <div class="w-full !ml-1">
-                                    <div class="flex w-full text-4xs !text-gray-500 justify-between">
-                                        <div><i class="fa-solid fa-clock"></i> 19:07</div>
-                                        <div>11/11/2024</div>
-                                    </div>
-                                    <div class="!my-1 !text-xs">Anna Levina</div>
-                                    <div class="text-4xs !text-gray-500"><i class="fa-solid fa-user-group"></i> Content Server Administrator</div>
-                                </div>
-                            </div>
-                        
-                            <div class="flex">
-                                <div class="flex flex-col items-center">
-                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white !font-semibold text-3xs">
-                                        PW
-                                    </div>
-                                    <div class="w-1 h-11 bg-gradient-to-b from-blue-500 via-green-500 to-orange-500"></div>
-                                </div>
-
-                                <div class="w-full !ml-1">
-                                    <div class="flex text-4xs !text-gray-500 justify-between">
-                                        <div><i class="fa-solid fa-clock"></i> 19:07</div>
-                                        <div>11/11/2024</div>
-                                    </div>
-                                    <div class="!my-1 !text-xs">Anna Levina</div>
-                                    <div class="text-4xs !text-gray-500"><i class="fa-solid fa-user-group"></i> Content Server Administrator</div>
-                                </div>
-                            </div>
-                        
-                            <div class="flex">
-                                <div class="flex flex-col items-center">
-                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white !font-semibold text-3xs">
-                                        PW
-                                    </div>
-                                    <div class="w-1 h-11 bg-gradient-to-b from-blue-500 via-green-500 to-orange-500"></div>
-                                </div>
-
-                                <div class="w-full !ml-1">
-                                    <div class="flex text-4xs !text-gray-500 justify-between">
-                                        <div><i class="fa-solid fa-clock"></i> 19:07</div>
-                                        <div>11/11/2024</div>
-                                    </div>
-                                    <div class="!my-1 !text-xs">Anna Levina</div>
-                                    <div class="text-4xs !text-gray-500"><i class="fa-solid fa-user-group"></i> Content Server Administrator</div>
-                                </div>
-                            </div>
-                        
-                            <div class="flex">
-                                <div class="flex flex-col items-center">
-                                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white !font-semibold text-3xs">
-                                        PW
-                                    </div>
-                                </div>
-
-                                <div class="w-full !ml-1">
-                                    <div class="flex text-4xs !text-gray-500 justify-between">
-                                        <div><i class="fa-solid fa-clock"></i> 19:07</div>
-                                        <div>11/11/2024</div>
-                                    </div>
-                                    <div class="!my-1 !text-xs">Anna Levina</div>
-                                    <div class="text-4xs !text-gray-500"><i class="fa-solid fa-user-group"></i> Content Server Administrator</div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="flex flex-col w-full" id="recent-login-container"></div>
                     </div>
                 </div>
             </div>
@@ -207,8 +136,92 @@
     </div>
     
     <script>
+        const userProfiles = {};
+
         (function() {
             initializeRecordsTypeChart();
+            initializeRecentLogins();
+
+            function initializeRecentLogins() {
+                try {
+                    [LL_REPTAG_$RecentUserLogins RUNSQL SETVAR:recentUserLogins /]
+                    const logs = [LL_REPTAG_!RecentUserLogins TOJSON /];
+                    // const logs = [];
+
+                    logs.forEach(log => {
+                        if(!userProfiles[log.ID]) {
+                            userProfiles[log.ID] = generateRandomPastelColor();
+                        }
+                    });
+
+                    for(const [i, log] of logs.entries()) {
+                        const [date, time] = log.LastLoginTime.split(' ');
+
+                        // Create the main wrapper
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "flex";
+
+                        // Create the left column (circle with initials)
+                        const leftCol = document.createElement("div");
+                        leftCol.className = "flex flex-col items-center";
+
+                        
+                        const circle = document.createElement("div");
+                        circle.className = `flex items-center justify-center w-8 h-8 rounded-full text-white !font-semibold text-3xs`;
+                        circle.style.background = userProfiles[log.ID];
+                        circle.textContent = displayUserNameAvatarTextFromName(log.UserName);
+                        
+                        leftCol.appendChild(circle);
+
+                        if(i != logs.length-1) {
+                            const bar = document.createElement('div');
+                            bar.className = 'w-1 h-9';
+                            bar.style.background = combineRGBToGradient(userProfiles[log.ID], userProfiles[logs[i+1].ID]);
+                            leftCol.appendChild(bar);
+                        }
+
+                        // Create the right column (content)
+                        const rightCol = document.createElement("div");
+                        rightCol.className = "w-full !ml-1";
+
+                        // Time and Date
+                        const timeDateWrapper = document.createElement("div");
+                        timeDateWrapper.className = "flex text-4xs !text-gray-500 justify-between";
+
+                        const timeElement = document.createElement("div");
+                        timeElement.innerHTML = `<i class="fa-solid fa-clock"></i> ${time}`;
+
+                        const dateElement = document.createElement("div");
+                        dateElement.textContent = date.replaceAll('-', '/');
+
+                        timeDateWrapper.appendChild(timeElement);
+                        timeDateWrapper.appendChild(dateElement);
+
+                        // Name
+                        const nameElement = document.createElement("div");
+                        nameElement.className = "!my-1 !text-xs";
+                        nameElement.textContent = log.UserName;
+
+                        // Role
+                        const roleElement = document.createElement("div");
+                        roleElement.className = "text-4xs !text-gray-500";
+                        roleElement.innerHTML = `<i class="fa-solid fa-user-group"></i> ${log.Department}`;
+
+                        // Assemble right column
+                        rightCol.appendChild(timeDateWrapper);
+                        rightCol.appendChild(nameElement);
+                        rightCol.appendChild(roleElement);
+
+                        // Assemble main wrapper
+                        wrapper.appendChild(leftCol);
+                        wrapper.appendChild(rightCol);
+
+                        document.getElementById('recent-login-container').appendChild(wrapper);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
 
             function initializeRecordsTypeChart() {
                 try {
