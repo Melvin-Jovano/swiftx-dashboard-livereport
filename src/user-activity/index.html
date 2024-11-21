@@ -103,7 +103,14 @@
 
                             <div class="!font-semibold">
                                 <div class="!mb-1">MOST ACTIVE USER</div>
-                                <div>Admin <i class="fa-solid fa-chart-line !text-green-500 !ml-1"></i></div>
+                                [LL_REPTAG_$MostActiveUsers RUNSQL SETVAR:mostActiveUsers /]
+                                [LL_WEBREPORT_FOR DATA:[LL_REPTAG_!mostActiveUsers /] VAR:i /]
+                                    [LL_WEBREPORT_IF "[LL_REPTAG_!i_index /]" < "2" /]
+                                        <div>[LL_REPTAG_%i CURRENTVAL RECORD:UserName /] <i class="fa-solid fa-chart-line !text-green-500 !ml-1"></i></div>
+                                    [LL_WEBREPORT_ELSE /]
+                                        <div>[LL_REPTAG_%i CURRENTVAL RECORD:UserName /] <i class="fa-solid fa-chart-line !text-green-500 !ml-1"></i></div>
+                                    [LL_WEBREPORT_ENDIF /]
+                                [LL_WEBREPORT_ENDFOR /]
                             </div>
                         </div>
                     </div>
@@ -205,52 +212,9 @@
 
             function initializeRecordsTypeChart() {
                 try {
-                    // [LL_REPTAG_$DailyUserEngagement RUNSQL SETVAR:dailyUserEngagement /]
-                    // const chartData = [LL_REPTAG_!dailyUserEngagement TOJSON /];
-                    const chartData = [
-                        {
-                            "DayOfWeek": "Fri",
-                            "ActiveUsers": 2,
-                            "TotalActivities": 58,
-                            "ActivityDate": "2024-11-15"
-                        },
-                        {
-                            "DayOfWeek": "Sat",
-                            "ActiveUsers": 1,
-                            "TotalActivities": 2,
-                            "ActivityDate": "2024-11-16"
-                        },
-                        {
-                            "DayOfWeek": "Sun",
-                            "ActiveUsers": 1,
-                            "TotalActivities": 24,
-                            "ActivityDate": "2024-11-17"
-                        },
-                        {
-                            "DayOfWeek": "Mon",
-                            "ActiveUsers": 0,
-                            "TotalActivities": 0,
-                            "ActivityDate": "2024-11-18"
-                        },
-                        {
-                            "DayOfWeek": "Tue",
-                            "ActiveUsers": 1,
-                            "TotalActivities": 48,
-                            "ActivityDate": "2024-11-19"
-                        },
-                        {
-                            "DayOfWeek": "Wed",
-                            "ActiveUsers": 2,
-                            "TotalActivities": 3244,
-                            "ActivityDate": "2024-11-20"
-                        },
-                        {
-                            "DayOfWeek": "Thu",
-                            "ActiveUsers": 2,
-                            "TotalActivities": 6152,
-                            "ActivityDate": "2024-11-21"
-                        }
-                    ];
+                    [LL_REPTAG_$DailyUserEngagement RUNSQL SETVAR:dailyUserEngagement /]
+                    const chartData = [LL_REPTAG_!dailyUserEngagement TOJSON /];
+                    // const chartData = [];
 
                     if (!chartData || !Array.isArray(chartData)) {
                         console.error('Invalid chart data');
