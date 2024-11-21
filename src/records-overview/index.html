@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link href="/assets/tailwind.css" rel="stylesheet">
+    <link href="/assets/tailwind.css" rel="stylesheet">
     <link href="/assets/fontawesome.css" rel="stylesheet">
     <script src="/assets/chart.js"></script>
-    <script src="/assets/utils.js"></script> -->
+    <script src="/assets/utils.js"></script>
     <link href="/img/dashboard-widgets/assets/tailwind.css" rel="stylesheet">
     <link href="/img/dashboard-widgets/assets/fontawesome.css" rel="stylesheet">
     <script src="/img/dashboard-widgets/assets/chart.js"></script>
@@ -72,8 +72,8 @@
                         <i class="fa-solid fa-file-circle-plus"></i> <span class="underline">Recently Added</span>
                     </div>
                     
-                    <div class="h-full overflow-auto">
-                        <div class="overflow-auto h-full" id="recently-added-container"></div>
+                    <div class="h-full">
+                        <div class="overflow-auto max-h-28" id="recently-added-container"></div>
                     </div>
                 </div>
             </div>
@@ -91,6 +91,7 @@
                 try {
                     [LL_REPTAG_$RecentlyAddedRecords RUNSQL SETVAR:recentlyAddedRecords /]
                     const records = [LL_REPTAG_!recentlyAddedRecords TOJSON /];
+                    console.warn("records", records)
                     
                     for(const record of records) {
                         const container = document.createElement('div'); // Main container
@@ -116,12 +117,16 @@
                         
                         // File link
                         const fileLink = document.createElement('a');
+                        fileLink.href = nodeLink(record.FileID);
+                        fileLink.target = "_blank";
                         fileLink.className = "!mx-1 !text-blue-500 cursor-pointer";
                         fileLink.innerHTML = `${truncateString(record.FileName, 20)}`;
                         textContainer.appendChild(fileLink);
                         
                         // Folder link
                         const folderLink = document.createElement('a');
+                        folderLink.href = nodeLink(record.FolderID);
+                        folderLink.target = "_blank";
                         folderLink.className = "!ml-1 !text-blue-500 cursor-pointer";
                         folderLink.innerHTML = `${truncateString(record.FolderName, 20)}`;
                         textContainer.appendChild(document.createTextNode(' into '));

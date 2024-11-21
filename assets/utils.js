@@ -42,3 +42,7 @@ function truncateString(str, length = 10) {
     }
     return str;
 }
+
+function nodeLink(nodeId) {
+    return `/otcs/cs.exe/app/nodes/${nodeId}`;
+}
