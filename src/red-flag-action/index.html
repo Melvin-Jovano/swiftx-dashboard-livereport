@@ -25,7 +25,14 @@
 </head>
 
 <body class="binf-widgets h-screen">
-    <div class="bg-gray-200 flex h-full tailwind-wrapper">
+    <div class="bg-gray-200 flex h-full tailwind-wrapper relative">
+        
+        <div class="absolute top-2 right-2 rounded-full bg-slate-200 opacity-50 hover:opacity-100">
+            <a href="[LL_REPTAG_URLPREFIXFULL /]?func=ll&objId=291544&objAction=RunReport&nexturl=[LL_REPTAG_URLPREFIX /][LL_REPTAG_MYID NODEINFO:PARENTID LLURL:BROWSE ESCAPEURL /]" target="_blank" class="no-underline !p-2 shadow-lg flex items-center justify-center cursor-pointer" title="Full Details">
+                <i class="fa-solid fa-up-right-from-square !text-gray-800"></i>
+            </a>
+        </div>
+
         <div class="w-full h-full flex !p-1 bg-gray-300">
             <div class="w-5/12 h-full !p-2">
                 <div class="bg-white rounded-lg shadow-lg !p-3 h-full overflow-auto relative">
@@ -46,35 +53,44 @@
                 <div class="flex !mb-2 max-h-18">
                     <div class="w-full flex flex-col justify-between bg-red-500 !text-white rounded-lg shadow-lg !p-2.5">
                         <div class="!font-semibold !text-sm">Delete Actions</div>
-                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        <!-- [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
                         [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
                             [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
-                        [LL_WEBREPORT_ENDIF /]
-                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
+                        [LL_WEBREPORT_ENDIF /] -->
+                        <!-- <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div> -->
+                        <div class="!text-2xl !font-semibold">111</div>
                     </div>
                     
                     <div class="w-full flex flex-col justify-between bg-blue-500 !text-white rounded-lg shadow-lg !p-2.5 !mx-2">
                         <div class="!font-semibold !text-sm">Attribute Changes</div>
-                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        <!-- [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
                         [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
                             [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
-                        [LL_WEBREPORT_ENDIF /]
-                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
+                        [LL_WEBREPORT_ENDIF /] -->
+                        <!-- <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div> -->
+                        <div class="!text-2xl !font-semibold">111</div>
                     </div>
                 
                     <div class="w-full flex flex-col justify-between bg-orange-500 !text-white rounded-lg shadow-lg !p-2.5">
                         <div class="!font-semibold !text-sm">Permission Changes</div>
-                        [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
+                        <!-- [LL_REPTAG_$TotalCountByAction RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:totalCountResult /]
                         [LL_WEBREPORT_IF "[LL_REPTAG_!totalCountResult /]" != "V{<>}" /]
                             [LL_REPTAG_!totalCountResult RECARRAY:1:1 SETVAR:totalCount /]
-                        [LL_WEBREPORT_ENDIF /]
-                        <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div>
+                        [LL_WEBREPORT_ENDIF /] -->
+                        <!-- <div class="!text-2xl !font-semibold">[LL_REPTAG_!totalCount /]</div> -->
+                        <div class="!text-2xl !font-semibold">111</div>
                     </div>
                 </div>
             
                 <div class="bg-white flex-grow rounded-lg shadow-lg !p-3">
-                    <div class="!text-lg !text-gray-800 !mb-1.5">
-                        <i class="fa-solid fa-folder"></i> <span class="underline">Top Affected Locations</span>
+                    <div class="!text-lg !text-gray-800 !mb-1.5 flex items-center justify-between">
+                        <div>
+                            <i class="fa-solid fa-folder"></i> <span class="underline">Top Affected Locations</span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-circle-info cursor-pointer" title="See Details"></i>
+                        </div>
                     </div>
                     
                     <div class="h-full overflow-auto">
@@ -119,163 +135,163 @@
     </div>
     
     <script>
-        function switchTab(type) {
-            try {
-                const container = document.getElementById('top-affected-locations-table-container');
-                container.innerHTML = '';
+        // function switchTab(type) {
+        //     try {
+        //         const container = document.getElementById('top-affected-locations-table-container');
+        //         container.innerHTML = '';
                 
-                selectTab(type);
+        //         selectTab(type);
                 
-                if(type == "All") {
-                    [LL_REPTAG_$TopAllAffectedLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
-                    const data = [LL_REPTAG_!results TOJSON /];
-                    createTopAffectedLocations(data);
-                } else if(type == "Delete Actions") {
-                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:results /]
-                    const data = [LL_REPTAG_!results TOJSON /];
-                    createTopAffectedLocations(data);
-                } else if(type == "Attribute Changes") {
-                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
-                    const data = [LL_REPTAG_!results TOJSON /];
-                    createTopAffectedLocations(data);
-                } else if(type == "Permission Changes") {
-                    [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
-                    const data = [LL_REPTAG_!results TOJSON /];
-                    createTopAffectedLocations(data);
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
+        //         if(type == "All") {
+        //             [LL_REPTAG_$TopAllAffectedLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
+        //             const data = [LL_REPTAG_!results TOJSON /];
+        //             createTopAffectedLocations(data);
+        //         } else if(type == "Delete Actions") {
+        //             [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"Delete" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+        //             const data = [LL_REPTAG_!results TOJSON /];
+        //             createTopAffectedLocations(data);
+        //         } else if(type == "Attribute Changes") {
+        //             [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"AttrChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+        //             const data = [LL_REPTAG_!results TOJSON /];
+        //             createTopAffectedLocations(data);
+        //         } else if(type == "Permission Changes") {
+        //             [LL_REPTAG_$TopAffectedLocations RUNSQL:[LL_REPTAG_"PermChange" /]:[LL_REPTAG_"7" /] SETVAR:results /]
+        //             const data = [LL_REPTAG_!results TOJSON /];
+        //             createTopAffectedLocations(data);
+        //         }
+        //     } catch (e) {
+        //         console.error(e);
+        //     }
+        // }
         
-        function selectTab(type) {
-            const attr = document.getElementById('attribute-affected-locations');
-            const all = document.getElementById('all-affected-locations');
-            const del = document.getElementById('deleted-affected-locations');
-            const perm = document.getElementById('permission-affected-locations');
+        // function selectTab(type) {
+        //     const attr = document.getElementById('attribute-affected-locations');
+        //     const all = document.getElementById('all-affected-locations');
+        //     const del = document.getElementById('deleted-affected-locations');
+        //     const perm = document.getElementById('permission-affected-locations');
 
-            function deselectAll() {
-                attr.classList.remove('!text-blue-500');
-                del.classList.remove('!text-blue-500');
-                perm.classList.remove('!text-blue-500');
-                all.classList.remove('!text-blue-500');
-                del.classList.add('!text-gray-400');
-                perm.classList.add('!text-gray-400');
-                attr.classList.add('!text-gray-400');
-                all.classList.add('!text-gray-400');
-            }
+        //     function deselectAll() {
+        //         attr.classList.remove('!text-blue-500');
+        //         del.classList.remove('!text-blue-500');
+        //         perm.classList.remove('!text-blue-500');
+        //         all.classList.remove('!text-blue-500');
+        //         del.classList.add('!text-gray-400');
+        //         perm.classList.add('!text-gray-400');
+        //         attr.classList.add('!text-gray-400');
+        //         all.classList.add('!text-gray-400');
+        //     }
 
-            deselectAll();
+        //     deselectAll();
 
-            if(type == 'All') {
-                all.classList.remove('!text-gray-400');
-                all.classList.add('!text-blue-500');
-            } else if(type == 'Delete Actions') {
-                del.classList.remove('!text-gray-400');
-                del.classList.add('!text-blue-500');
-            } else if(type == 'Attribute Changes') {
-                attr.classList.remove('!text-gray-400');
-                attr.classList.add('!text-blue-500');
-            } else if(type == 'Permission Changes') {
-                perm.classList.remove('!text-gray-400');
-                perm.classList.add('!text-blue-500');
-            }
-        }
+        //     if(type == 'All') {
+        //         all.classList.remove('!text-gray-400');
+        //         all.classList.add('!text-blue-500');
+        //     } else if(type == 'Delete Actions') {
+        //         del.classList.remove('!text-gray-400');
+        //         del.classList.add('!text-blue-500');
+        //     } else if(type == 'Attribute Changes') {
+        //         attr.classList.remove('!text-gray-400');
+        //         attr.classList.add('!text-blue-500');
+        //     } else if(type == 'Permission Changes') {
+        //         perm.classList.remove('!text-gray-400');
+        //         perm.classList.add('!text-blue-500');
+        //     }
+        // }
         
-        function createTopAffectedLocations(records) {
-            for (const record of records) {
-                // Create the container div
-                const container = document.createElement('div');
+        // function createTopAffectedLocations(records) {
+        //     for (const record of records) {
+        //         // Create the container div
+        //         const container = document.createElement('div');
                 
-                // Create the flex row div
-                const flexRow = document.createElement('div');
-                flexRow.className = 'flex border-b !p-1';
+        //         // Create the flex row div
+        //         const flexRow = document.createElement('div');
+        //         flexRow.className = 'flex border-b !p-1';
         
-                // Create the first anchor element for the location
-                const anchor1 = document.createElement('a');
-                anchor1.href = `/otcs/cs.exe/nodes/${records.ParentID}`;
-                anchor1.target = '_blank';
-                anchor1.className = 'w-5/6 !text-blue-500 flex items-start text-left text-3xs';
-                anchor1.textContent = record.Location;
+        //         // Create the first anchor element for the location
+        //         const anchor1 = document.createElement('a');
+        //         anchor1.href = `/otcs/cs.exe/nodes/${records.ParentID}`;
+        //         anchor1.target = '_blank';
+        //         anchor1.className = 'w-5/6 !text-blue-500 flex items-start text-left text-3xs';
+        //         anchor1.textContent = record.Location;
         
-                // Create the second anchor element for the total actions
-                const anchor2 = document.createElement('a');
-                anchor2.target = '_blank';
-                anchor2.href = '';
-                anchor2.className = 'w-1/6 !text-blue-500 flex text-left items-start text-3xs';
-                anchor2.textContent = record.TotalCount;
+        //         // Create the second anchor element for the total actions
+        //         const anchor2 = document.createElement('a');
+        //         anchor2.target = '_blank';
+        //         anchor2.href = '';
+        //         anchor2.className = 'w-1/6 !text-blue-500 flex text-left items-start text-3xs';
+        //         anchor2.textContent = record.TotalCount;
         
-                // Append anchors to the flex row
-                flexRow.appendChild(anchor1);
-                flexRow.appendChild(anchor2);
+        //         // Append anchors to the flex row
+        //         flexRow.appendChild(anchor1);
+        //         flexRow.appendChild(anchor2);
         
-                // Append the flex row to the container
-                container.appendChild(flexRow);
+        //         // Append the flex row to the container
+        //         container.appendChild(flexRow);
                 
-                // Append the container to the body (or another target element)
-                document.getElementById("top-affected-locations-table-container").appendChild(container);
-            }
+        //         // Append the container to the body (or another target element)
+        //         document.getElementById("top-affected-locations-table-container").appendChild(container);
+        //     }
             
-        }
+        // }
         
 
-        (function() {
-            initializeRecordsTypeChart();
-            switchTab("All");
+        // (function() {
+        //     initializeRecordsTypeChart();
+        //     switchTab("All");
 
-            function initializeRecordsTypeChart() {
-                try {
-                    [LL_REPTAG_$TopLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
-                    const data = [LL_REPTAG_!results TOJSON /];
-                    // const data = [];
+        //     function initializeRecordsTypeChart() {
+        //         try {
+        //             [LL_REPTAG_$TopLocations RUNSQL:[LL_REPTAG_"7" /] SETVAR:results /]
+        //             const data = [LL_REPTAG_!results TOJSON /];
+        //             // const data = [];
 
-                    const chartData = data.slice(0, 3);
+        //             const chartData = data.slice(0, 3);
 
-                    document.getElementById('total-overviews').innerText = chartData.reduce((sum, item) => sum + item.ActionCount, 0);
+        //             document.getElementById('total-overviews').innerText = chartData.reduce((sum, item) => sum + item.ActionCount, 0);
                     
-                    if (!chartData || !Array.isArray(chartData)) {
-                        console.error('Invalid chart data');
-                        return;
-                    }
+        //             if (!chartData || !Array.isArray(chartData)) {
+        //                 console.error('Invalid chart data');
+        //                 return;
+        //             }
                     
-                    const ctx = document.getElementById('overview-past-chart');
-                    if (!ctx) {
-                        console.error('Canvas element not found');
-                        return;
-                    }
+        //             const ctx = document.getElementById('overview-past-chart');
+        //             if (!ctx) {
+        //                 console.error('Canvas element not found');
+        //                 return;
+        //             }
                     
-                    const recordsTypeData = {
-                        labels: chartData.map(item => getLastPath(item.Location)),
-                        data: chartData.map(item => item.ActionCount)
-                    };
+        //             const recordsTypeData = {
+        //                 labels: chartData.map(item => getLastPath(item.Location)),
+        //                 data: chartData.map(item => item.ActionCount)
+        //             };
 
-                    new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: recordsTypeData.labels,
-                            datasets: [{data: recordsTypeData.data}]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                    labels: {
-                                        boxWidth: 20,
-                                        font: {
-                                            size: 9.5
-                                        }
-                                    }
-                                },
-                            },
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error initializing chart:', error);
-                }
-            }
-        })();
+        //             new Chart(ctx, {
+        //                 type: 'doughnut',
+        //                 data: {
+        //                     labels: recordsTypeData.labels,
+        //                     datasets: [{data: recordsTypeData.data}]
+        //                 },
+        //                 options: {
+        //                     responsive: true,
+        //                     maintainAspectRatio: false,
+        //                     plugins: {
+        //                         legend: {
+        //                             position: 'top',
+        //                             labels: {
+        //                                 boxWidth: 20,
+        //                                 font: {
+        //                                     size: 9.5
+        //                                 }
+        //                             }
+        //                         },
+        //                     },
+        //                 }
+        //             });
+        //         } catch (error) {
+        //             console.error('Error initializing chart:', error);
+        //         }
+        //     }
+        // })();
     </script>
 </body>
 </html>
