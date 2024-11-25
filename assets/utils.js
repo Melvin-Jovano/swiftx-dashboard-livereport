@@ -1,8 +1,17 @@
 function displayUserNameAvatarText(username, firstName = null, lastName = null) {
     if(firstName != null && lastName != null) {
-        return firstName?.[0] + lastName?.[0];
+        return firstName?.[0].toUpperCase() + lastName?.[0].toUpperCase();
     }
-    return username[0];
+    return username[0].toUpperCase();
+}
+
+function displayUserNameAvatarTextFromName(name) {
+    const names = name.split(' ');
+    if(names.length === 1) {
+        return names[0][0].toUpperCase();
+    } else {
+        return names[0][0].toUpperCase() + names[1][0].toUpperCase();
+    }
 }
 
 function displayUserName(username, firstName = null, lastName = null) {
@@ -50,4 +59,15 @@ function nodeLink(nodeId) {
 function getLastPath(input, delimiter = ">") {
     const segments = input.split(delimiter);
     return segments[segments.length - 1].trim();
+}
+
+function generateRandomPastelColor() {
+  const r = Math.floor(Math.random() * 100) + 100;
+  const g = Math.floor(Math.random() * 100) + 100;
+  const b = Math.floor(Math.random() * 100) + 100;
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function combineRGBToGradient(rgb1, rgb2, to = 'to bottom') {
+    return `linear-gradient(${to}, ${rgb1}, ${rgb2})`;
 }
